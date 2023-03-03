@@ -194,7 +194,7 @@ export default function Home(props) {
               onChange={(e) => setEvent(e.target.value)}
             />
             {/* For who is the gift? */}
-            <label>Для кого подарок?</label>
+            <label>для кого подарок?</label>
             <select
               name="gender"
               value={gender}
