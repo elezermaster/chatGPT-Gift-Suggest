@@ -4,9 +4,9 @@ import styles from "./index.module.css";
 import Lottie from "lottie-react";
 import cubesLoading from "../public/cubesloading.json";
 
-const Example = () => {
-  return <Lottie animationData={cubesLoading} />;
-};
+// const Example = () => {
+//   return <Lottie animationData={cubesLoading} />;
+// };
 
 export default function Home() {
   const [myevent, setEvent] = useState('Purim');
@@ -17,17 +17,17 @@ export default function Home() {
   const [hobbies, setHobbies] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const temp = "1. Набор для танца - включающий в себя танцевальную одежду и аксессуары (от 25 до 100 долларов). 2. Спортивный набор - включающий в себя одежду и аксессуары для спорта (от 25 до 100 долларов). 3. Набор для фитнеса - включающий в себя спортивную одежду, аксессуары и принадлежности для фитнеса (от 25 до 100 долларов)"
-  const editedResult = [
-    temp
-      .slice(0, temp.indexOf("2. ")),
-    temp
-      .slice(temp.indexOf("2. "), temp.indexOf("3. ")),
-    temp
-      .slice(temp.indexOf("3. "), temp.length),
-  ]
+  // const temp = "1. Набор для танца - включающий в себя танцевальную одежду и аксессуары (от 25 до 100 долларов). 2. Спортивный набор - включающий в себя одежду и аксессуары для спорта (от 25 до 100 долларов). 3. Набор для фитнеса - включающий в себя спортивную одежду, аксессуары и принадлежности для фитнеса (от 25 до 100 долларов)"
+  // const editedResult = [
+  //   temp
+  //     .slice(0, temp.indexOf("2. ")),
+  //   temp
+  //     .slice(temp.indexOf("2. "), temp.indexOf("3. ")),
+  //   temp
+  //     .slice(temp.indexOf("3. "), temp.length),
+  // ]
 
-  console.log(editedResult);
+  // console.log(editedResult);
 
 
 
@@ -35,13 +35,13 @@ export default function Home() {
   //let editedResult = []
   async function onSubmit(event) {
     event.preventDefault();
-    console.log(event.target[0].value);
-    console.log(event.target[1].value);
-    console.log(event.target[2].value);
-    console.log(event.target[3].value);
-    console.log(event.target[4].value);
-    console.log(event.target[5].value);
-    console.log(JSON.stringify({ myevent, priceMin, priceMax, gender, age, hobbies }));
+    // console.log(event.target[0].value);
+    // console.log(event.target[1].value);
+    // console.log(event.target[2].value);
+    // console.log(event.target[3].value);
+    // console.log(event.target[4].value);
+    // console.log(event.target[5].value);
+    // console.log(JSON.stringify({ myevent, priceMin, priceMax, gender, age, hobbies }));
     if (
       myevent === '' ||
       priceMin === '' ||
