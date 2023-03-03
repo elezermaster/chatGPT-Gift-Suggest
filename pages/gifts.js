@@ -147,7 +147,7 @@ export default function Home(props) {
         <h2>{props.locale}</h2>
         {/*Suggest gift generator*/}
         {
-          result
+          result.length !== 0
             ?
             <h3>Придумать другие варианты подарка</h3>
             :
