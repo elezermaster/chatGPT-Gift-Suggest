@@ -1,0 +1,16 @@
+{
+    "Age cannot be more than 120 years!": "הגיל לא יכול להיות יותר מ-120 שנים!",
+    "One of the fields is empty!": "אחד השדות ריק!",
+    "Failed to generate gift ideas. Please try again later!": "יצירת רעיונות למתנות נכשלה. בבקשה נסה שוב מאוחר יותר!",
+    "Price error!": "טעות במחיר!",
+    "Generate Gift Ideas": "צור רעיונות למתנות",
+    "enter age": "להזין גיל",
+    "event": "ארוע",
+    "Enter a hobby": "הזן תחביב",
+    "man": "איש",
+    "Enter the maximum price": "הזן את המחיר המקסימלי",
+    "Enter the minimum price": "הזן את המחיר המינימלי",
+    "woman": "אִשָׁה",
+    "Looking for the best gift ideas 🎁 💡": "מחפש את הרעיונות הטובים ביותר למתנות 🎁 💡",
+    "Suggest gift generator": "להמציא מתנות"
+}

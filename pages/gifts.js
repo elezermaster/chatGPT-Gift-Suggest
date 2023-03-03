@@ -3,20 +3,32 @@ import { useState } from "react";
 import styles from "./index.module.css";
 import Lottie from "lottie-react";
 import cubesLoading from "../public/cubesloading.json";
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useTranslation } from 'next-i18next'
 
-// const Example = () => {
-//   return <Lottie animationData={cubesLoading} />;
-// };
 
-export default function Home() {
-  const [myevent, setEvent] = useState('Purim');
-  const [gender, setGender] = useState('woman');
+export async function getServerSideProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, [
+        'common',
+        // 'footer',
+      ])),
+      // Will be passed to the page component as props
+    },
+  }
+}
+
+export default function Home(props) {
+  const [myevent, setEvent] = useState('День Рожденья');
+  const [gender, setGender] = useState('для женщины');
   const [age, setAge] = useState(30);
   const [priceMin, setPriceMin] = useState(25);
   const [priceMax, setPriceMax] = useState(100);
-  const [hobbies, setHobbies] = useState('');
+  const [hobbies, setHobbies] = useState('спорт, чтение, путешествия');
   const [loading, setLoading] = useState(false);
 
+  const { t } = useTranslation('common')
   // const temp = "1. Набор для танца - включающий в себя танцевальную одежду и аксессуары (от 25 до 100 долларов). 2. Спортивный набор - включающий в себя одежду и аксессуары для спорта (от 25 до 100 долларов). 3. Набор для фитнеса - включающий в себя спортивную одежду, аксессуары и принадлежности для фитнеса (от 25 до 100 долларов)"
   // const editedResult = [
   //   temp
@@ -50,7 +62,15 @@ export default function Home() {
       age === '' ||
       hobbies === ''
     ) {
-      alert("One of the field empty!")
+      alert(t("alert_empty_field"))
+      return;
+    }
+    if (age > 120) {
+      alert(t("alert_age_not_more"))
+      return;
+    }
+    if (priceMin > priceMax) {
+      alert(t("alert_price_error"))
       return;
     }
     if (loading) {
@@ -93,7 +113,7 @@ export default function Home() {
       //setAnimalInput("");
     } catch (error) {
       // Consider implementing your own error handling logic here
-      alert("Failed to genrate gift ideas. Try later again!")
+      alert(t("alert_generate_fail"))
       console.error(error);
       alert(error.message);
     } finally {
@@ -112,69 +132,28 @@ export default function Home() {
       <main className={styles.main}>
         {/* <img src="/dog.png" className={styles.icon} /> */}
         <h1> 🎁 💡</h1>
-        <h3>Suggest gift generator</h3>
-
-        {/* 
-          <form onSubmit={onSubmit}>
-          <label>Event</label>
-          <input
-            type="text"
-            name="myevent"
-            placeholder="Enter the event"
-            value={myevent}
-            onChange={(e) => setEvent(e.target.value)}
-          />
-
-          <label>For who is the gift?</label>
-          <select
-            name="gender"
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
+        {result &&
+          <div
+            className={styles.result}
+          //dangerouslySetInnerHTML={{ __html: result }}
           >
-            <option value="man">Man</option>
-            <option value="woman">Woman</option>
-          </select>
+            <ul>
+              {result.map((arr, i) =>
+                <li key={i}>{arr}</li>
+              )}
+            </ul>
+          </div>
+        }
+        <h2>{props.locale}</h2>
+        {/*Suggest gift generator*/}
+        {
+          result
+            ?
+            <h3>Придумать другие варианты подарка</h3>
+            :
+            <h3>Генератор идей для подарка</h3>
+        }
 
-          <label>Age</label>
-          <input
-            type="number"
-            min={1}
-            max={99}
-            name="age"
-            placeholder="Enter the age"
-            value={age}
-            onChange={(e) => setAge(Number.parseInt(e.target.value))}
-          />
-
-          <label>Price from</label>
-          <input
-            type="number"
-            min={1}
-            name="priceMin"
-            placeholder="Enter the minimum price"
-            value={priceMin}
-            onChange={(e) => setPriceMin(Number.parseInt(e.target.value))}
-          />
-
-          <label>Price to</label>
-          <input
-            type="number"
-            min={1}
-            name="priceMax"
-            placeholder="Enter the maximum price"
-            value={priceMax}
-            onChange={(e) => setPriceMax(Number.parseInt(e.target.value))}
-          />
-
-          <label>Hobbies</label>
-          <input
-            className="last-input"
-            type="text"
-            name="hobbies"
-            placeholder="Enter the hobbies"
-            value={hobbies}
-            onChange={(e) => setHobbies(e.target.value)}
-          /> */}
 
         {loading
           ?
@@ -196,7 +175,8 @@ export default function Home() {
                   }}
                 />
               </div>
-              <h3>Looking for the best gift ideas 🎁 💡</h3>
+              {/* Looking for the best gift ideas 🎁 💡 */}
+              <h3>Искусственный интеллект соображает вам лучшие идеи подарков </h3>
               {/* <img src="/loading.webp" className={styles.loading} /> */}
 
 
@@ -204,7 +184,8 @@ export default function Home() {
           )
           :
           <form onSubmit={onSubmit}>
-            <label>Event</label>
+            {/* Event */}
+            <label>событие</label>
             <input
               type="text"
               name="myevent"
@@ -212,18 +193,20 @@ export default function Home() {
               value={myevent}
               onChange={(e) => setEvent(e.target.value)}
             />
-
-            <label>For who is the gift?</label>
+            {/* For who is the gift? */}
+            <label>Для кого подарок?</label>
             <select
               name="gender"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
             >
-              <option value="man">Man</option>
-              <option value="woman">Woman</option>
+              {/* Man */}
+              <option value="для мужчины">м</option>
+              {/* Woman */}
+              <option value="для женщины">ж</option>
             </select>
-
-            <label>Age</label>
+            {/* Age */}
+            <label>возраст</label>
             <input
               type="number"
               min={1}
@@ -233,8 +216,8 @@ export default function Home() {
               value={age}
               onChange={(e) => setAge(Number.parseInt(e.target.value))}
             />
-
-            <label>Price from</label>
+            {/* Price from */}
+            <label>цена от</label>
             <input
               type="number"
               min={1}
@@ -243,8 +226,8 @@ export default function Home() {
               value={priceMin}
               onChange={(e) => setPriceMin(Number.parseInt(e.target.value))}
             />
-
-            <label>Price to</label>
+            {/* Price to */}
+            <label>цена до</label>
             <input
               type="number"
               min={1}
@@ -253,8 +236,8 @@ export default function Home() {
               value={priceMax}
               onChange={(e) => setPriceMax(Number.parseInt(e.target.value))}
             />
-
-            <label>Hobbies</label>
+            {/* Hobbies */}
+            <label>увлечения</label>
             <input
               className="last-input"
               type="text"
@@ -263,33 +246,40 @@ export default function Home() {
               value={hobbies}
               onChange={(e) => setHobbies(e.target.value)}
             />
-            <input type="submit" value="Generate gift ideas" />
+            {/* Generate Gift Ideas */}
+            <input type="submit" value={t("придумать идею подарка")} />
           </form>
         }
 
-
-
-        <div>
-          {/* <Lottie
-            animationData={cubesLoading}
-            style={{ height: 350, width: 350 }}
-          /> */}
-        </div>
-
-        {result &&
+        {/* {result &&
           <div
             className={styles.result}
           //dangerouslySetInnerHTML={{ __html: result }}
           >
             <ul>
               {result.map((arr, i) =>
-                <li>{arr}</li>
+                <li key={i}>{arr}</li>
               )}
             </ul>
           </div>
-        }
+        } */}
 
       </main>
     </div>
   );
 }
+
+// { 
+
+
+// "input_generate_gift": "Generate Gift Ideas", 
+// "placeholder_age": "enter age", 
+// "placeholder_event": "event", 
+// "placeholder_hobby": "Enter a hobby", 
+// "placeholder_man": "man", 
+// "placeholder_max_price": "Enter the maximum price", 
+// "placeholder_min_price": "Enter the minimum price", 
+// "placeholder_woman": "woman", 
+// "title_looking_for_the_ideas": "Looking for the best gift ideas 🎁 💡", 
+// "title_suggest_gift": "Suggest gift generator" 
+// }

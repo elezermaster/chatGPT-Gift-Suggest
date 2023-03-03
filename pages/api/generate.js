@@ -52,11 +52,17 @@ export default async function (req, res) {
 }
 
 function generatePrompt(event, priceMin, priceMax, gender, age, hobbies) {
-  return `suggest 3 ${event} gift ideas
-          between ${priceMin}$ and ${priceMax}$ 
-          for a ${age} years old ${gender} 
-          that is into ${hobbies}. 
-          The answer translate to russian.`
+  return `предложи 3 идеи подарков на ${event}
+          по цене от ${priceMin}$ и ${priceMax}$
+          ${gender}  в возрасте ${age} лет
+          который увлекается ${hobbies}`
+
+          // `suggest 3 ${event} gift ideas
+          // between ${priceMin}$ and ${priceMax}$ 
+          // for a ${age} years old ${gender} 
+          // that is into ${hobbies}. 
+          // The answer translate to russian.`
+
           // Write the answer in english
           // and then translate it to russian`
 
@@ -68,4 +74,4 @@ function generatePrompt(event, priceMin, priceMax, gender, age, hobbies) {
 
 }
 
-// curl - X POST localhost: 3001 / api / generate - gifts - H "Content-Type: application/json" - d '{"event": "Purim", "priceMin": 50, "priceMax": 100, "gender": "woman", "age": 40, "hobbies": "drawing, traveling, coding"}'
+// curl - X POST localhost:3001/api/generate - H "Content-Type: application/json" - d '{"event": "Purim", "priceMin": 50, "priceMax": 100, "gender": "woman", "age": 40, "hobbies": "drawing, traveling, coding"}'
