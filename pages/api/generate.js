@@ -15,11 +15,13 @@ export default async function (req, res) {
     return;
   }
 
-  const animal = req.body.animal || '';
-  if (animal.trim().length === 0) {
+  const { event, priceMin, priceMax, gender, age, hobbies } = req.body;
+  const prompt = generatePrompt(event, priceMin, priceMax, gender, age, hobbies) || '';
+
+  if (prompt.trim().length === 0) {
     res.status(400).json({
       error: {
-        message: "Please enter a valid animal",
+        message: "Please enter a valid fields",
       }
     });
     return;
@@ -28,8 +30,9 @@ export default async function (req, res) {
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: generatePrompt(animal),
+      prompt: prompt,
       temperature: 0.6,
+      max_tokens: 2048,
     });
     res.status(200).json({ result: completion.data.choices[0].text });
   } catch(error) {
@@ -48,15 +51,21 @@ export default async function (req, res) {
   }
 }
 
-function generatePrompt(animal) {
-  const capitalizedAnimal =
-    animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-  return `Suggest three names for an animal that is a superhero.
+function generatePrompt(event, priceMin, priceMax, gender, age, hobbies) {
+  return `suggest 3 ${event} gift ideas
+          between ${priceMin}$ and ${priceMax}$ 
+          for a ${age} years old ${gender} 
+          that is into ${hobbies}. 
+          The answer translate to russian.`
+          // Write the answer in english
+          // and then translate it to russian`
 
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: ${capitalizedAnimal}
-Names:`;
+          // suggest 3 Purim gift ideas 
+          // between 50$ and 100$
+          // for a 40 years old woman
+          // that is into religious. 
+          // The answer translate to russian.
+
 }
+
+// curl - X POST localhost: 3001 / api / generate - gifts - H "Content-Type: application/json" - d '{"event": "Purim", "priceMin": 50, "priceMax": 100, "gender": "woman", "age": 40, "hobbies": "drawing, traveling, coding"}'
